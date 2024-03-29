@@ -1,4 +1,4 @@
-package funcs
+package main
 
 func Functional4() {
 	println("Hello, I am Functional4")

@@ -1,4 +1,4 @@
-package funcs
+package main
 
 // Closure 闭包
 func Closure(name string) func() string {

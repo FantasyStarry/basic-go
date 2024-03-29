@@ -1,4 +1,4 @@
-package funcs
+package main
 
 func YourName(name string, aliases ...string) {
 

@@ -1,4 +1,4 @@
-package funcs
+package main
 
 // Recursive 递归
 func Recursive(n int) {

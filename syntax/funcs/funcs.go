@@ -1,4 +1,4 @@
-package funcs
+package main
 
 // Func1 可以没有参数
 func Func1() {
