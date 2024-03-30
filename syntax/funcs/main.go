@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	//DeferClosureLoopV1()
+	DeferClosureLoopV1()
 	//DeferClosureLoopV2()
-	DeferClosureLoopV3()
+	//DeferClosureLoopV3()
 }

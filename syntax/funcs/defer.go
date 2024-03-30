@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // Defer 后进先出
 func Defer() {
 	defer func() {
@@ -35,9 +37,10 @@ func DeferClosureStruct() *MyStruct {
 
 func DeferClosureLoopV1() {
 	for i := 0; i < 10; i++ {
+		fmt.Printf("before: i 的地址是: %p, 值是：%d \n", &i, i) // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 		// defer先进后出
 		defer func() {
-			println(i) // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+			fmt.Printf("i 的地址是: %p, 值是：%d \n", &i, i) // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 		}()
 	}
 }
@@ -45,7 +48,7 @@ func DeferClosureLoopV1() {
 func DeferClosureLoopV2() {
 	for i := 0; i < 10; i++ {
 		defer func(val int) {
-			println(val) // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+			fmt.Printf("i 的地址是: %p, 值是：%d \n", &val, val) // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 		}(i)
 	}
 }
