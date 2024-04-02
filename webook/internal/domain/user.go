@@ -2,9 +2,11 @@ package domain
 
 //操作实际业务上的数据
 
+// User 领域对象，是DDD中的Entity
 type User struct {
-	Addr Address
+	Email    string
+	Password string
 }
 
-type Address struct {
-}
+//type Address struct {
+//}
