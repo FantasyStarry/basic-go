@@ -5,6 +5,7 @@ import (
 	"basic-go/webook/internal/service"
 	"errors"
 	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -118,6 +119,14 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	}
 	if uRepo == (domain.User{}) {
 		ctx.String(http.StatusOK, "登录失败")
+		return
+	}
+	// 登录成功之后
+	sess := sessions.Default(ctx)
+	// 设置要放在session中的值
+	sess.Set("userId", uRepo.Id)
+	err = sess.Save()
+	if err != nil {
 		return
 	}
 	ctx.String(http.StatusOK, "登录成功")

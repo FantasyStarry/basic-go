@@ -39,6 +39,7 @@ func (r *UserRepository) FindByEmail(ctx context.Context, u domain.User) (domain
 		return domain.User{}, err
 	}
 	return domain.User{
+		Id:       u.Id,
 		Email:    ud.Email,
 		Password: ud.Password,
 	}, nil
