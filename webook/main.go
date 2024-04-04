@@ -28,7 +28,7 @@ func initWebServer() *gin.Engine {
 	server.Use(cors.New(cors.Config{
 		//AllowOrigins:     []string{"http://localhost:3000"},
 		//AllowMethods:     []string{"POST", "GET", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Content-Type"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		AllowCredentials: true, // 是否允许携带 cookie
 		AllowOriginFunc: func(origin string) bool {
 			if strings.HasPrefix(origin, "http://localhost") {
