@@ -6,7 +6,10 @@ import (
 	"context"
 )
 
-var ErrUserDuplicateEmail = dao.ErrUserDuplicateEmail
+var (
+	ErrUserDuplicateEmail = dao.ErrUserDuplicateEmail
+	ErrUserNotFound       = dao.ErrUserNotFound
+)
 
 // UserRepository 定义了用户仓库的结构体
 // 这个结构体用于存储和操作用户相关数据
@@ -27,6 +30,18 @@ func (r *UserRepository) Create(ctx context.Context, u domain.User) error {
 		Email:    u.Email,
 		Password: u.Password,
 	})
+}
+
+func (r *UserRepository) FindByEmail(ctx context.Context, u domain.User) (domain.User, error) {
+	email := u.Email
+	ud, err := r.dao.FindByEmail(ctx, email)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return domain.User{
+		Email:    ud.Email,
+		Password: ud.Password,
+	}, nil
 }
 
 func (r *UserRepository) FindById(userId int64) {
