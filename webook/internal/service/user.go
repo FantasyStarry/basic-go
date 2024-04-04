@@ -11,6 +11,8 @@ type UserService struct {
 	repo *repository.UserRepository
 }
 
+var ErrUserDuplicateEmail = repository.ErrUserDuplicateEmail
+
 func NewUserService(repo *repository.UserRepository) *UserService {
 	return &UserService{
 		repo: repo,

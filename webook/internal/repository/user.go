@@ -6,6 +6,8 @@ import (
 	"context"
 )
 
+var ErrUserDuplicateEmail = dao.ErrUserDuplicateEmail
+
 // UserRepository 定义了用户仓库的结构体
 // 这个结构体用于存储和操作用户相关数据
 type UserRepository struct {
