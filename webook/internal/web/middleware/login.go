@@ -33,7 +33,7 @@ func (l *LoginMiddlewareBuilder) Build() gin.HandlerFunc {
 		//}
 		sess := sessions.Default(ctx)
 		id := sess.Get("userId")
-		if id != nil {
+		if id == nil {
 			// 没有登录
 			ctx.AbortWithStatus(http.StatusUnauthorized)
 			return
