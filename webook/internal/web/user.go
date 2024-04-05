@@ -4,10 +4,12 @@ import (
 	"basic-go/webook/internal/domain"
 	"basic-go/webook/internal/service"
 	"errors"
+	"fmt"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 // UserHandler 定义跟User用户有关的路由
@@ -133,7 +135,36 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	return
 }
 func (u *UserHandler) Edit(ctx *gin.Context) {
-
+	type EditReq struct {
+		NickName string `json:"nickname"`
+		Birthday string `json:"birthday"`
+		AboutMe  string `json:"aboutMe"`
+	}
+	sess := sessions.Default(ctx)
+	userId := sess.Get("userId").(int64)
+	var req EditReq
+	if err := ctx.Bind(&req); err != nil {
+		ctx.String(http.StatusOK, "绑定数据失败")
+		return
+	}
+	formatTime := "2006-01-02"
+	birthday, err := time.Parse(formatTime, req.Birthday)
+	if err != nil {
+		ctx.String(http.StatusOK, "时间格式转化错误")
+		fmt.Printf("%s", err.Error())
+		return
+	}
+	err = u.svc.EditUserInfo(ctx, domain.User{
+		Id:       userId,
+		Nickname: req.NickName,
+		Birthday: birthday,
+		AutoMe:   req.AboutMe,
+	})
+	if err != nil {
+		ctx.String(http.StatusOK, "修改个人信息失败")
+		return
+	}
+	ctx.String(http.StatusOK, "修改个人信息成功")
 }
 
 func (u *UserHandler) Profile(ctx *gin.Context) {

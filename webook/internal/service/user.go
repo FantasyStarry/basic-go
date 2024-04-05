@@ -5,7 +5,6 @@ import (
 	"basic-go/webook/internal/repository"
 	"context"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -53,10 +52,14 @@ func (svc *UserService) Login(ctx context.Context, u domain.User) (domain.User, 
 	return uRepo, nil
 }
 
-func (svc *UserService) Profile(ctx *gin.Context, userId int64) (domain.User, error) {
+func (svc *UserService) Profile(ctx context.Context, userId int64) (domain.User, error) {
 	userRepo, err := svc.repo.FindById(ctx, userId)
 	if err != nil {
 		return domain.User{}, err
 	}
 	return userRepo, nil
+}
+
+func (svc *UserService) EditUserInfo(ctx context.Context, u domain.User) error {
+	return svc.repo.EditUserInfo(ctx, u)
 }

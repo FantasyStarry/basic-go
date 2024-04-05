@@ -63,3 +63,13 @@ func (r *UserRepository) FindById(ctx context.Context, userId int64) (domain.Use
 		AutoMe:   ud.AutoMe,
 	}, nil
 }
+
+func (r *UserRepository) EditUserInfo(ctx context.Context, user domain.User) error {
+	ud := dao.User{
+		Id:       user.Id,
+		Nickname: user.Nickname,
+		Birthday: user.Birthday.Unix(),
+		AutoMe:   user.AutoMe,
+	}
+	return r.dao.UpdateUserInfo(ctx, ud)
+}

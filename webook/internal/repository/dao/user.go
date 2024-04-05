@@ -27,7 +27,7 @@ func NewUserDao(db *gorm.DB) *UserDAO {
 
 func (dao *UserDAO) Insert(ctx context.Context, u User) error {
 	// 存毫秒数
-	now := time.Now().UnixMilli()
+	now := time.Now().Unix()
 	u.CreateTime = now
 	u.UpdateTime = now
 	err := dao.db.WithContext(ctx).Create(&u).Error
@@ -51,6 +51,15 @@ func (dao *UserDAO) FindById(ctx context.Context, id int64) (User, error) {
 	var u User
 	err := dao.db.WithContext(ctx).Where("id = ?", id).First(&u).Error
 	return u, err
+}
+
+func (dao *UserDAO) UpdateUserInfo(ctx context.Context, u User) error {
+	return dao.db.Debug().WithContext(ctx).
+		Model(&User{}).
+		Where("id = ?", u.Id).
+		Select("nickname", "birthday", "auto_me").
+		Updates(u).
+		Error
 }
 
 // User 直接对应数据库表结构
