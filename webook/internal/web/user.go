@@ -135,6 +135,21 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 func (u *UserHandler) Edit(ctx *gin.Context) {
 
 }
-func (u *UserHandler) Profile(ctx *gin.Context) {
 
+func (u *UserHandler) Profile(ctx *gin.Context) {
+	// 取出存放在session中的userId
+	sess := sessions.Default(ctx)
+	userId := sess.Get("userId").(int64)
+	user, err := u.svc.Profile(ctx, userId)
+	if err != nil {
+		ctx.String(http.StatusOK, "个人信息获取失败")
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"Id":       user.Id,
+		"Nickname": user.Nickname,
+		"Email":    user.Email,
+		"Birthday": user.Birthday,
+		"AutoMe":   user.AutoMe,
+	})
 }

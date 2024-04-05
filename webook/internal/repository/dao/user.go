@@ -47,11 +47,20 @@ func (dao *UserDAO) FindByEmail(ctx context.Context, email string) (User, error)
 	return u, err
 }
 
+func (dao *UserDAO) FindById(ctx context.Context, id int64) (User, error) {
+	var u User
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(&u).Error
+	return u, err
+}
+
 // User 直接对应数据库表结构
 // 有些人叫做Entity 有些人叫做model 也有人叫做po
 type User struct {
-	Id       int64  `gorm:"primaryKey,autoIncrement"`
+	Id       int64 `gorm:"primaryKey,autoIncrement"`
+	Nickname string
 	Email    string `gorm:"unique"` // 全部用户唯一
+	Birthday int64  // 存毫秒数，展示的时候在按照时间戳格式展示
+	AutoMe   string // 个人简介
 	Password string
 	// 创建时间，毫秒数
 	CreateTime int64

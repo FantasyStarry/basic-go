@@ -7,7 +7,10 @@ import "time"
 // User 领域对象，是DDD中的Entity
 type User struct {
 	Id         int64
+	Nickname   string
 	Email      string
+	Birthday   time.Time
+	AutoMe     string
 	Password   string
 	CreateTime time.Time
 }

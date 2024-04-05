@@ -4,6 +4,7 @@ import (
 	"basic-go/webook/internal/domain"
 	"basic-go/webook/internal/repository/dao"
 	"context"
+	"time"
 )
 
 var (
@@ -39,15 +40,26 @@ func (r *UserRepository) FindByEmail(ctx context.Context, u domain.User) (domain
 		return domain.User{}, err
 	}
 	return domain.User{
-		Id:       u.Id,
+		Id:       ud.Id,
 		Email:    ud.Email,
 		Password: ud.Password,
 	}, nil
 }
 
-func (r *UserRepository) FindById(userId int64) {
+func (r *UserRepository) FindById(ctx context.Context, userId int64) (domain.User, error) {
 	// 先从cache中查找
 	// 再从dao里面找
 	// 找到了再写会cache
-
+	ud, err := r.dao.FindById(ctx, userId)
+	if err != nil {
+		return domain.User{}, err
+	}
+	birthday := time.Unix(ud.Birthday, 0)
+	return domain.User{
+		Id:       ud.Id,
+		Email:    ud.Email,
+		Nickname: ud.Nickname,
+		Birthday: birthday,
+		AutoMe:   ud.AutoMe,
+	}, nil
 }
