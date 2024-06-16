@@ -6,8 +6,10 @@ import (
 	"basic-go/webook/internal/service"
 	"basic-go/webook/internal/web"
 	"basic-go/webook/internal/web/middleware"
+	"fmt"
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -41,7 +43,14 @@ func initWebServer() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	store := sessions.NewCookieStore([]byte("secret"))
+	//store := cookie.NewStore([]byte("secret"))
+	store, err := redis.NewStore(16, "tcp", "localhost:6379", "",
+		[]byte("YxJFVsrK7Mt1617ncfx8X6xa3uuGuYfK"),
+		[]byte("N2pQkhdvdz2yHK3JXDzMwKVP6KXrYwGp"))
+	if err != nil {
+		fmt.Printf("这里报错")
+		panic(err)
+	}
 	server.Use(sessions.Sessions("ssid", store))
 
 	var IgnorePaths = []string{"/users/login", "/users/signup"}

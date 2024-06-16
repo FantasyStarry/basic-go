@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	regexp "github.com/dlclark/regexp2"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -127,6 +127,9 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	sess := sessions.Default(ctx)
 	// 设置要放在session中的值
 	sess.Set("userId", uRepo.Id)
+	sess.Options(sessions.Options{
+		MaxAge: 60 * 24 * 7,
+	})
 	err = sess.Save()
 	if err != nil {
 		return
@@ -134,6 +137,22 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "登录成功")
 	return
 }
+
+func (u *UserHandler) Logout(ctx *gin.Context) {
+	// 退出登录
+	sess := sessions.Default(ctx)
+	// 设置要放在session中的值
+	sess.Options(sessions.Options{
+		MaxAge: -1,
+	})
+	err := sess.Save()
+	if err != nil {
+		return
+	}
+	ctx.String(http.StatusOK, "退出登录成功")
+	return
+}
+
 func (u *UserHandler) Edit(ctx *gin.Context) {
 	type EditReq struct {
 		NickName string `json:"nickname"`
